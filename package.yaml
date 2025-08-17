@@ -1,0 +1,34 @@
+# package.yaml
+
+name: notes-viewer-backend
+version: 0.1.0.0
+homepage: https://github.com/githubuser/notes-viewer-backend#readme
+license: BSD-3-Clause
+license-file: LICENSE
+author: Author name here
+maintainer: example@example.com
+copyright: 2025 Author name here
+category: Web
+build-type: Simple
+extra-source-files:
+  - README.md
+  - CHANGELOG.md
+
+executables:
+  notes-viewer-backend:
+    main: Main.hs
+    source-dirs: src
+    ghc-options:
+      - -Wall
+      - -Wcompat
+      - -Widentities
+      - -Wincomplete-record-updates
+      - -Wincomplete-uni-patterns
+      - -Wmissing-export-lists
+      - -Wmissing-home-modules
+      - -Wpartial-fields
+      - -Wredundant-constraints
+    language: Haskell2010
+    dependencies:
+      - base >= 4.7 && < 5
+      - scotty >= 0.22
