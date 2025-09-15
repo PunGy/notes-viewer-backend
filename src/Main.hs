@@ -1,8 +1,13 @@
 {-# LANGUAGE OverloadedStrings #-}
 
-import Web.Scotty
+module Main where
 
-main = scotty 3000 $
-  get "/:word" $ do
-    beam <- param "word"
-    html $ mconcat ["<h1>Scotty, ", beam, " me up!</h1>"]
+import Web.Scotty
+import Core.Config (loadConfig)
+import Api.Router (setupRouter)
+import Core.Types (port)
+
+main :: IO ()
+main = do
+  config <- loadConfig
+  scotty (port config) $ setupRouter config

@@ -32,3 +32,12 @@ executables:
     dependencies:
       - base >= 4.7 && < 5
       - scotty >= 0.22
+      - text
+      - envparse
+      - aeson
+      - bytestring
+      - base16-bytestring
+      - crypton
+      - http-types
+      - mtl
+      - transformers
