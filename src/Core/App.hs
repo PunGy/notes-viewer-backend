@@ -1,24 +1,12 @@
 {-# LANGUAGE GeneralizedNewtypeDeriving, FlexibleInstances #-}
 
-module Core.App (AppM, runAppContext, liftActionM) where
+module Core.App (HandlerM, RouterM) where
 
-import Control.Monad.Reader (ReaderT, MonadReader, runReaderT)
-import Control.Monad.IO.Class (MonadIO)
+import Control.Monad.Reader (ReaderT)
 import Core.Types (AppConfig)
-import Web.Scotty (ActionM)
-import Control.Monad.Trans.Class (lift)
+import Web.Scotty.Trans
 
-newtype AppM a = AppM { unAppM :: ReaderT AppConfig ActionM a }
-  deriving
-    ( Functor
-    , Applicative
-    , Monad
-    , MonadIO
-    , MonadReader AppConfig
-    )
+type AppM = ReaderT AppConfig IO
+type HandlerM = ActionT AppM
+type RouterM = ScottyT AppM
 
-liftActionM :: ActionM a -> AppM a
-liftActionM action = AppM (lift action)
-
-runAppContext :: AppConfig -> AppM a -> ActionM a
-runAppContext config app = runReaderT (unAppM app) config

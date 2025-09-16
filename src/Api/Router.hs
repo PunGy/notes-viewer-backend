@@ -3,18 +3,15 @@
 module Api.Router (setupRouter) where
 
 import Api.Webhook (webhookHandler)
-import Core.App (liftActionM, runAppContext)
-import Core.Types (AppConfig)
+import Core.App
 import Data.Aeson (object, (.=))
 import qualified Data.Text as T
 import Utils.Logger (logInfo)
-import Web.Scotty
+import Web.Scotty.Trans
 
-setupRouter :: AppConfig -> ScottyM ()
-setupRouter config = do
-  let runner = runAppContext config
-
+setupRouter :: RouterM ()
+setupRouter = do
   get "/health" $ do
-    runner $ logInfo "Got health message" >> (liftActionM $ json $ object ["status" .= ("healthy" :: T.Text)])
-
-  post "/webhook/github" $ runner webhookHandler
+    logInfo "Got health message"
+    json $ object ["status" .= ("healthy" :: T.Text)]
+  post "/webhook/github" $ webhookHandler
