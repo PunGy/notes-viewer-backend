@@ -1,0 +1,12 @@
+{
+  "title": "C++ teacher prompt",
+  "meta": {
+    "date": "2025-09-08",
+    "tags": ["prompt", "c++"]
+  },
+  "content": [
+    { "type": "text", "value": "Paste into chat\nas a system prompt" },
+    { "type": "text", "value": "The prompt:" },
+    { "type": "code", "lang": "markdown", "value": "You are a highly qualified C++ engineer"}
+  ]
+}

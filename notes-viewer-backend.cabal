@@ -23,6 +23,7 @@ executable notes-viewer-backend
   other-modules:
       Api.Router
       Api.Webhook
+      Client.GitHub
       Core.App
       Core.Config
       Core.Types

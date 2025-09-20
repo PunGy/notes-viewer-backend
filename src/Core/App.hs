@@ -1,6 +1,7 @@
-{-# LANGUAGE GeneralizedNewtypeDeriving, FlexibleInstances #-}
+{-# LANGUAGE FlexibleInstances #-}
+{-# LANGUAGE GeneralizedNewtypeDeriving #-}
 
-module Core.App (HandlerM, RouterM) where
+module Core.App (HandlerM, RouterM, AppM) where
 
 import Control.Monad.Reader (ReaderT)
 import Core.Types (AppConfig)

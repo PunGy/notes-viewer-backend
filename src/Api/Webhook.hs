@@ -6,13 +6,11 @@ import Control.Monad.Reader (asks)
 import Core.App (HandlerM)
 import Core.Types (AppConfig (..), webhookSecret)
 import Data.Aeson (object, (.=))
-import qualified Data.ByteString.Lazy as LBS
 import qualified Data.Text as T
-import Data.Text.Encoding (decodeUtf8Lenient)
 import qualified Data.Text.Lazy as TL
 import Network.HTTP.Types.Status
 import Security.GitHub (verifySignature)
-import Utils.Logger (logDebug, logWarning)
+import Utils.Logger (logWarning)
 import Web.Scotty.Trans
 
 webhookHandler :: HandlerM ()
@@ -27,7 +25,7 @@ webhookHandler = do
       let isValid = verifySignature secret _body (TL.toStrict sig)
 
       if isValid
-        then processWebhook _body
+        then processWebhook
         else do
           status status401
           json $ object ["error" .= ("Invalid signature" :: T.Text)]
@@ -39,9 +37,6 @@ webhookHandler = do
       status status404
       json $ object ["error" .= ("Missing signatrue or event header" :: T.Text)]
 
-processWebhook :: LBS.ByteString -> HandlerM ()
-processWebhook body = do
-  let a = (decodeUtf8Lenient $ LBS.toStrict body)
-  _ <- logDebug $ "body: " <> a
-  status ok200
+processWebhook :: HandlerM ()
+processWebhook = do
   json $ object ["status" .= ("success" :: T.Text)]
