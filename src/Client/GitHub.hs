@@ -4,13 +4,14 @@
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE ScopedTypeVariables #-}
 
-module Client.GitHub (fetchRepository) where
+module Client.GitHub (fetchRepository, fetchFile) where
 
 import Control.Exception
 import Control.Monad.Reader
 import Core.App (HandlerM)
 import Core.Types
 import Data.Aeson
+import qualified Data.ByteString.Lazy as BL
 import qualified Data.Text as T
 import qualified Data.Text.Encoding as TE
 import GHC.Generics
@@ -114,3 +115,34 @@ fetchRepository = do
 
   processItems :: [TreeItem] -> [File]
   processItems = map makeFile . filter isRelevantItem
+
+fetchFile :: File -> HandlerM (Either T.Text BL.ByteString)
+fetchFile file = do
+  manager <- liftIO $ newManager tlsManagerSettings
+  token <- asks githubToken
+
+  initialRequest <- parseRequest $ T.unpack (url file)
+
+  let request =
+        initialRequest
+          { requestHeaders =
+              [ (hAuthorization, "Bearer " <> TE.encodeUtf8 (token))
+              , (hUserAgent, "notes-viewer-backend")
+              , ("Accept", "application/vnd.github.raw+text")
+              ]
+          }
+  logDebug $ "Fetching file from: " <> url file
+
+  result <- liftIO $ try $ httpLbs request manager
+
+  case result of
+    Left (e :: HttpException) -> do
+      logError $ "GitHub API request failed: " <> T.pack (show e)
+      return $ Left $ "Failed to fetch file" <> filename file
+    Right response -> do
+      let status = responseStatus response
+
+      if statusIsSuccessful status
+        then return $ Right $ responseBody response
+      else
+        return $ Left $ "GitHub API Error: " <> T.pack (show $ statusCode status)

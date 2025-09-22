@@ -21,8 +21,9 @@ extra-source-files:
 executable notes-viewer-backend
   main-is: Main.hs
   other-modules:
+      Api.File
+      Api.Files
       Api.Router
-      Api.Test
       Api.Webhook
       Client.GitHub
       Core.App

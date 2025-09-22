@@ -1,6 +1,6 @@
 {-# LANGUAGE OverloadedStrings #-}
 
-module Api.Test (testHandler) where
+module Api.Files (filesHandler) where
 
 import Client.GitHub (fetchRepository)
 import Core.App (HandlerM)
@@ -8,8 +8,8 @@ import Network.HTTP.Types.Status
 import Data.Aeson
 import Web.Scotty.Trans
 
-testHandler :: HandlerM ()
-testHandler = do
+filesHandler :: HandlerM ()
+filesHandler = do
   response <- fetchRepository
   case response of
     Left err  -> do

@@ -1,6 +1,6 @@
 {-# LANGUAGE OverloadedStrings #-}
 
-module Main where
+module Main(main) where
 
 import Core.Config (loadConfig)
 import Api.Router (setupRouter)
