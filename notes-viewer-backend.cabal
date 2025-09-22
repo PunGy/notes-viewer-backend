@@ -22,6 +22,7 @@ executable notes-viewer-backend
   main-is: Main.hs
   other-modules:
       Api.Router
+      Api.Test
       Api.Webhook
       Client.GitHub
       Core.App
@@ -43,6 +44,8 @@ executable notes-viewer-backend
     , bytestring
     , crypton
     , envparse
+    , http-client
+    , http-client-tls
     , http-types
     , mtl
     , scotty >=0.22

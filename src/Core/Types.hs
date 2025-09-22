@@ -1,8 +1,12 @@
-{-# LANGUAGE OverloadedStrings, DuplicateRecordFields #-}
+{-# LANGUAGE DeriveGeneric #-}
+{-# LANGUAGE DuplicateRecordFields #-}
+{-# LANGUAGE OverloadedStrings #-}
 
-module Core.Types (LogLevel(..), AppConfig(..)) where
+module Core.Types (File (..), LogLevel (..), AppConfig (..)) where
 
+import Data.Aeson
 import Data.Text (Text)
+import GHC.Generics
 
 -- Configuration
 
@@ -17,4 +21,14 @@ data AppConfig = AppConfig
   , outputPath :: FilePath
   , logLevel :: LogLevel
   , port :: Int
-  } deriving (Show)
+  }
+  deriving (Show)
+
+data File = File
+  { url :: Text
+  , filename :: Text
+  , size :: Maybe Int
+  }
+  deriving (Show, Generic)
+
+instance ToJSON File

@@ -3,6 +3,7 @@
 module Api.Router (setupRouter) where
 
 import Api.Webhook (webhookHandler)
+import Api.Test (testHandler)
 import Core.App
 import Data.Aeson (object, (.=))
 import qualified Data.Text as T
@@ -15,3 +16,4 @@ setupRouter = do
     logInfo "Got health message"
     json $ object ["status" .= ("healthy" :: T.Text)]
   post "/webhook/github" $ webhookHandler
+  get "/test" $ testHandler
